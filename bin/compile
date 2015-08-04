@@ -10,7 +10,7 @@ CACHE_DIR=$2
 
 OPENCV_PACKAGE="http://void.cc/opencv-build-0.0.1.tar.gz"
 OPENCV_PACKAGE_ETAG=$(curl -s --head "$OPENCV_PACKAGE" | grep -Ei '^etag' | sed -r 's/^etag|[^a-zA-Z0-9]+//gi')
-VENDORED_OPENCV="/app/vendor/opencv"
+VENDORED_OPENCV="$BUILD_DIR/vendor/opencv"
 OPENCV_CACHE="$CACHE_DIR/opencv_$OPENCV_PACKAGE_ETAG";
 
 if [ -d "$OPENCV_CACHE" ]; then
@@ -30,8 +30,8 @@ VENDORED_SO="$BUILD_DIR/vendor/opencv/lib"
 mkdir -p $VENDORED_SO
 cp -a "$VENDORED_OPENCV/lib/." $VENDORED_SO
 
-export PKG_CONFIG_PATH="/app/vendor/opencv/lib/pkgconfig:$PKG_CONFIG_PATH"
-export LD_LIBRARY_PATH="/app/vendor/opencv/lib:$LD_LIBRARY_PATH"
+export PKG_CONFIG_PATH="$VENDORED_OPENCV/lib/pkgconfig:$PKG_CONFIG_PATH"
+export LD_LIBRARY_PATH="$VENDORED_OPENCV/lib:$LD_LIBRARY_PATH"
 
 cat <<EOF > export
 export LD_LIBRARY_PATH="\$LD_LIBRARY_PATH:$LD_LIBRARY_PATH"
@@ -40,6 +40,5 @@ EOF
 
 # runtime
 mkdir -p "$BUILD_DIR/.profile.d"
-echo "export LD_LIBRARY_PATH=\"/app/vendor/opencv/lib:\$LD_LIBRARY_PATH\"" > $BUILD_DIR/.profile.d/opencv.sh
-echo "export PKG_CONFIG_PATH=\"/app/vendor/opencv/lib/pkgconfig:\$PKG_CONFIG_PATH\"" >> $BUILD_DIR/.profile.d/opencv.sh
-
+echo "export LD_LIBRARY_PATH=\"$VENDORED_OPENCV/lib:\$LD_LIBRARY_PATH\"" > $BUILD_DIR/.profile.d/opencv.sh
+echo "export PKG_CONFIG_PATH=\"$VENDORED_OPENCV/lib/pkgconfig:\$PKG_CONFIG_PATH\"" >> $BUILD_DIR/.profile.d/opencv.sh
