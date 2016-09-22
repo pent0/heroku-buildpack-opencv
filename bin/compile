@@ -8,7 +8,7 @@ set -e
 BUILD_DIR=$1
 CACHE_DIR=$2
 
-OPENCV_PACKAGE="http://void.cc/opencv-build-0.0.1.tar.gz"
+OPENCV_PACKAGE="https://s3-us-west-2.amazonaws.com/cdn.thegrid.io/caliper/opencv-build-0.0.1.tar.gz"
 OPENCV_PACKAGE_ETAG=$(curl -s --head "$OPENCV_PACKAGE" | grep -Ei '^etag' | sed -r 's/^etag|[^a-zA-Z0-9]+//gi')
 VENDORED_OPENCV="/app/vendor/opencv"
 OPENCV_CACHE="$CACHE_DIR/opencv_$OPENCV_PACKAGE_ETAG";
