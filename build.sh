@@ -33,3 +33,11 @@ cd $OUT_PATH
 
 tar -cvzf opencv-build-$(VERSION).tar.gz ./
 curl --ftp-create-dirs -T opencv-build-$(VERSION).tgz -u $(FTP_USER):$(FTP_PASSWORD) ftp://void.cc/
+
+wget https://github.com/glennrp/libpng/archive/v1.2.59.tar.gz
+tar xvfz v1.2.59.tar.gz 
+
+cd libpng-1.2.59/
+./configure
+make check
+make install
